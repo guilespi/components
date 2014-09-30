@@ -1,6 +1,5 @@
-(ns lifecycle.core)
+(ns components.lifecycle.protocol)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defprotocol Lifecycle
+  (start [this] [this system] "Start all life")
+  (stop [this] [this system] "End all life"))
