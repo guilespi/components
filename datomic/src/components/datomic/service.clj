@@ -6,7 +6,7 @@
 (defn- make-uri
   [db host port]
   (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s"
-          db host port))
+          db host port db))
 
 (defrecord Datomic [state db host port]
   Lifecycle
