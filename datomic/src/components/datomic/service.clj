@@ -8,6 +8,9 @@
   (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s"
           db host port db))
 
+(defprotocol Uri
+  (get-uri [this] "Returns unique URI identifier for datomic storage"))
+
 (defrecord Datomic [state db host port]
   Lifecycle
   (stop [this system]
@@ -15,7 +18,10 @@
   (start [this system]
     (swap! state
            assoc :datomic
-           (d/connect (make-uri db host port)))))
+           (d/connect (make-uri db host port))))
+  Uri
+  (get-uri [_]
+    (make-uri db host port)))
 
 (defn make
   "Creates a datomic db component"
