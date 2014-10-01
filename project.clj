@@ -7,10 +7,12 @@
                  [intception.com.components/lifecycle "0.1.0"]
                  [intception.com.components/jetty "0.1.0"]
                  [intception.com.components/datomic "0.1.0"]
-                 [intception.com.components/app "0.1.0"]]
+                 [intception.com.components/app "0.1.0"]
+                 [intception.com.components/redis "0.1.0"]]
   :plugins [[lein-sub "0.2.4"]
             [codox "0.8.5"]]
   :sub ["lifecycle"
         "jetty"
         "datomic"
-        "app"])
+        "app"
+        "redis"])
