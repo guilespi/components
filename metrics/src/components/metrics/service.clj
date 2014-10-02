@@ -172,7 +172,10 @@
       (eval subject)))
   components.metrics.protocol/RegistryHolder
   (get-registry [this]
-    (:metrics-registry @state)))
+    (:metrics-registry @state))
+  components.lifecycle.protocol/Lifecycle
+  (start [this] true)
+  (stop[this] true))
 
 (defn make-dummy-system-monitor []
   (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))
