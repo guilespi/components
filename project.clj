@@ -8,7 +8,8 @@
                  [com.intception.components/jetty "0.1.1"]
                  [com.intception.components/datomic "0.1.1"]
                  [com.intception.components/app "0.1.1"]
-                 [com.intception.components/redis "0.1.1"]]
+                 [com.intception.components/redis "0.1.1"]
+                 [com.intception.components/metrics "0.1.1"]]
   :plugins [[lein-sub "0.2.4"]
             [codox "0.8.5"]]
   :sub ["lifecycle"
