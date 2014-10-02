@@ -116,21 +116,18 @@
                          :current/histograms (atom {})
                          :current/meters     (atom {})
                          :current/timers     (atom {}))
-      (println "configurationk: " conf)
       (when (:instrument-jvm conf)
         (metrics.jvm.core/instrument-jvm service-registry))
       (when (:console-reporter conf)
-        (start-console-reporter service-registry (:console-reporter-freq conf)))
-      (println "about to instrument all")
+      (when (get-in conf [:console-reporter :enabled])
+        (start-console-reporter service-registry (get-in conf [:console-reporter :freq])))
       (instrument/instrument-all (:application-name conf) this)
-      (println "instrumented " (:graphite-reporter conf))
-      (when (:graphite-reporter conf)
-        (println "starting graphite reporterk")
+      (when (get-in conf [:graphite-reporter :enabled])
         (start-graphite-reporter
           service-registry
-          (:graphite-reporter-host conf)
-          (:graphite-reporter-port conf)
-          (:graphite-reporter-freq conf)))))
+          (get-in conf [:graphite-reporter :host])
+          (get-in conf [:graphite-reporter :port])
+          (get-in conf [:graphite-reporter :freq]))))))
 
   (stop [this]))
 
@@ -139,13 +136,16 @@
   [config]
   (let [default-config {:application-name "dummy"
                         :instrument-jvm true
-                        :graphite-reporter false
-                        :graphite-reporter-host "localhost"
-                        :graphite-reporter-port 2003
-                        :graphite-reporter-freq 10
-                        :console-reporter false
-                        :console-reporter-freq 10}]
-  (->SystemMonitor (atom {:configuration (merge default-config config)}))))
+                        :graphite-reporter {:enabled false
+                                            :host "localhost"
+                                            :port 2003
+                                            :freq 10}
+                        :console-reporter {:enabled false
+                                           :freq 10}}]
+
+  (->SystemMonitor (atom {:configuration (merge-with
+                                           #(if (map? %1) (merge %1 %2) %2)
+                                           default-config config)}))))
 
 (defrecord DummySystemMonitor [state]
   components.metrics.protocol/Metrics
