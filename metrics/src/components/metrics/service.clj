@@ -174,9 +174,9 @@
   (get-registry [this]
     (:metrics-registry @state)))
 
-(defn- make-dummy-system-monitor []
+(defn make-dummy-system-monitor []
   (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))
 
-(def ^:dynamic *current-monitor* (make-dummy-system-monitor))
+(def ^:dynamic *current-monitor* nil)
 
 (defn monitor [] *current-monitor*)
