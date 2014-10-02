@@ -8,4 +8,4 @@
                  [metrics-clojure-jvm "2.2.0-beta1"]
                  [metrics-clojure-ring "2.2.0-beta1"]
                  [metrics-clojure-graphite "2.2.0-beta1"]
-                 [intception.com.components/lifecycle "0.1.1"]])
+                 [com.intception.components/lifecycle "0.1.1"]])
