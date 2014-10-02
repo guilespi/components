@@ -2,28 +2,38 @@
   (require [datomic.api :as d])
   (use components.lifecycle.protocol))
 
-;;TODO:this should be a multimethod for mutiple storage support
-(defn- make-uri
-  [db host port]
+(defmulti make-uri (fn [storage options] storage))
+
+(defmethod make-uri :postgres
+  [storage {:keys [db host port]}]
   (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s"
           db host port db))
+
+(defmethod make-uri :mem
+  [storage {:keys [db-name]}]
+  (format "datomic:mem://%s"
+          db-name))
 
 (defprotocol Uri
   (get-uri [this] "Returns unique URI identifier for datomic storage"))
 
-(defrecord Datomic [state db host port]
+(defrecord Datomic [state uri]
   Lifecycle
   (stop [this system]
     )
   (start [this system]
     (swap! state
            assoc :datomic
-           (d/connect (make-uri db host port))))
+           (d/connect uri)))
   Uri
   (get-uri [_]
-    (make-uri db host port)))
+    uri)
+
+  Service
+  (handler [_]
+    (:datomic @state)))
 
 (defn make
   "Creates a datomic db component"
- [{:keys [db host port]}]
- (->Datomic (atom {}) db host port))
+ [storage options]
+ (->Datomic (atom {}) (make-uri storage options)))

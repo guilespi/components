@@ -14,7 +14,11 @@
            (jetty/run-jetty (if (fn? routes)
                               (routes system)
                               routes)
-                            {:join? false :port port}))))
+                            {:join? false :port port})))
+
+  Service
+  (handler [_]
+    (:jetty @state)))
 
 (defn make
   "Creates a jetty web server component"

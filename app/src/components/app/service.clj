@@ -14,3 +14,15 @@
   "Creates an app component component"
  [& components]
  (->App components))
+
+(defn ->components
+  [app service]
+  (filter #(re-find (re-pattern (format "^components\\.%s\\.service\\.[^.]+$"
+                                        (name service)))
+                    ((comp (memfn getName) class) %))
+          (:components app)))
+
+(defn ->handler
+  [app service]
+  (when-let [s (first (->components app service))]
+    (handler s)))

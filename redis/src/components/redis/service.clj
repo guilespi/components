@@ -4,13 +4,18 @@
 
 
 (defrecord Redis [state host port]
+
   Lifecycle
   (stop [this system])
   (start [this system]
     (swap! state
            assoc :redis
            {:pool {} :spec {:host host
-                            :port port}})))
+                            :port port}}))
+
+  Service
+  (handler [_]
+    (:redis @state)))
 
 (defn make
   "Creates a redis component"
