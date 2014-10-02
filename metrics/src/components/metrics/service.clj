@@ -106,7 +106,7 @@
     (:metrics-registry @state))
 
   components.lifecycle.protocol/Lifecycle
-  (start [this]
+  (start [this system]
     (let [service-registry (metrics.core/new-registry)
           conf (:configuration @state)]
       (swap! state assoc
@@ -129,7 +129,7 @@
           (get-in conf [:graphite-reporter :port])
           (get-in conf [:graphite-reporter :freq]))))))
 
-  (stop [this]))
+  (stop [this system]))
 
 (defn make
   "Creates a monitor metrics server component"
@@ -174,8 +174,8 @@
   (get-registry [this]
     (:metrics-registry @state))
   components.lifecycle.protocol/Lifecycle
-  (start [this] true)
-  (stop[this] true))
+  (start [this system] true)
+  (stop[this system] true))
 
 (defn make-dummy-system-monitor []
   (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))
