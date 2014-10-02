@@ -24,5 +24,5 @@
 
 (defn ->handler
   [app service]
-  (when-let [s (first (get-component app service))]
+  (when-let [s (first (->components app service))]
     (handler s)))
