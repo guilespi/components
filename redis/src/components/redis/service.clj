@@ -25,4 +25,4 @@
 
 (defmacro exec
   [service & body]
-  `(car/wcar (:redis @(:state ~service)) ~@body))
+  `(car/wcar ~service ~@body))

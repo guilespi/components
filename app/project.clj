@@ -1,4 +1,4 @@
-(defproject com.intception.components/app "0.1.4"
+(defproject com.intception.components/app "0.1.5"
   :description "App Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"

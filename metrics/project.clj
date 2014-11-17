@@ -1,4 +1,4 @@
-(defproject com.intception.components/metrics "0.1.4"
+(defproject com.intception.components/metrics "0.1.5"
   :description "metrics component"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -8,4 +8,4 @@
                  [metrics-clojure-jvm "2.2.0-beta1"]
                  [metrics-clojure-ring "2.2.0-beta1"]
                  [metrics-clojure-graphite "2.2.0-beta1"]
-                 [com.intception.components/lifecycle "0.1.4"]])
+                 [com.intception.components/lifecycle "0.1.5"]])
