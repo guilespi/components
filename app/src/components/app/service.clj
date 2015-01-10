@@ -15,12 +15,16 @@
  [& components]
  (->App components))
 
-(defn ->components
-  [app service]
-  (filter #(re-find (re-pattern (format "^components\\.%s\\.service\\.[^.]+$"
-                                        (name service)))
+(defn ->by-class-name
+  [app component-class-name]
+  (filter #(re-find (re-pattern component-class-name)
                     ((comp (memfn getName) class) %))
           (:components app)))
+
+(defn ->components
+  [app service]
+  (->by-class-name app (format "^components\\.%s\\.service\\.[^.]+$"
+                               (name service))))
 
 (defn ->handler
   [app service]
