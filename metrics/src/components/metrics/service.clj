@@ -133,22 +133,6 @@
 
 (stop [this system]))
 
-(defn make
-  "Creates a monitor metrics server component"
-  [config]
-  (let [default-config {:application-name "dummy"
-                        :instrument-jvm true
-                        :graphite-reporter {:enabled false
-                                            :host "localhost"
-                                            :port 2003
-                                            :freq 10}
-                        :console-reporter {:enabled false
-                                           :freq 10}}]
-
-    (->SystemMonitor (atom {:configuration (merge-with
-                                             #(if (map? %1) (merge %1 %2) %2)
-                                             default-config config)}))))
-
 (defrecord DummySystemMonitor [state]
   components.metrics.protocol/Metrics
   (add-counter! [this id title] true)
@@ -178,6 +162,25 @@
   components.lifecycle.protocol/Lifecycle
   (start [this system] true)
   (stop[this system] true))
+
+(defn make
+  "Creates a monitor metrics server component"
+  [pconfig]
+  (let [default-config {:application-name "dummy"
+                        :instrument-jvm true
+                        :graphite-reporter {:enabled false
+                                            :host "localhost"
+                                            :port 2003
+                                            :freq 10}
+                        :console-reporter {:enabled false
+                                           :freq 10}}
+        config (merge-with #(if (map? %1) (merge %1 %2) %2)
+                           default-config
+                           pconfig)]
+    (if (or (get-in [:enabled :graphite-reporter] config)
+            (get-in [:enabled :console-reporter] config))
+      (->SystemMonitor (atom {:configuration config}))
+      (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))))
 
 (defn make-dummy-system-monitor []
   (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))

@@ -18,15 +18,16 @@
    (url-middleware handler system-monitor application-name default-normalize-uri))
   ([handler system-monitor application-name normalize-uri-fn]
    (fn [request]
-     (let [uri (normalize-uri-fn (:uri request))]
-       (when-not (metrics/timer? system-monitor uri)
-         (metrics/add-timer! system-monitor uri [application-name "web-times" uri]))
-       (when-not (metrics/meter? system-monitor uri)
-         (metrics/add-meter! system-monitor uri [application-name "web-meter" uri]))
-       (metrics/mark-meter! system-monitor uri)
-       (metrics/clock-this! system-monitor uri
-                            (binding [service/*current-monitor* system-monitor]
-                              (handler request)))))))
+     (if-let [uri (normalize-uri-fn (:uri request))]
+       (do (when-not (metrics/timer? system-monitor uri)
+             (metrics/add-timer! system-monitor uri [application-name "web-times" uri]))
+           (when-not (metrics/meter? system-monitor uri)
+             (metrics/add-meter! system-monitor uri [application-name "web-meter" uri]))
+           (metrics/mark-meter! system-monitor uri)
+           (metrics/clock-this! system-monitor uri
+                                (binding [service/*current-monitor* system-monitor]
+                                  (handler request))))
+       (handler request)))))
 
 (defn ring-middleware [handler system-monitor]
   (ring-metrics/instrument handler (metrics/get-registry system-monitor)))
