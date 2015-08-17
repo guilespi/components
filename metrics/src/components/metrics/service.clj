@@ -177,8 +177,8 @@
         config (merge-with #(if (map? %1) (merge %1 %2) %2)
                            default-config
                            pconfig)]
-    (if (or (get-in [:enabled :graphite-reporter] config)
-            (get-in [:enabled :console-reporter] config))
+    (if (or (get-in config [:graphite-reporter :enabled])
+            (get-in config [:console-reporter :enabled]))
       (->SystemMonitor (atom {:configuration config}))
       (->DummySystemMonitor (atom {:metrics-registry (metrics.core/new-registry)})))))
 
