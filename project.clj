@@ -1,4 +1,4 @@
-(defproject com.intception/components "0.1.7"
+(defproject com.intception/components "0.1.8"
   :description "Reusable services implementation following the components pattern"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
