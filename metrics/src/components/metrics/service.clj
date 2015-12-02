@@ -155,7 +155,7 @@
   (clock-this! [this id subject]
     (if (fn? subject)
       (subject)
-      (eval subject)))
+      subject))
   components.metrics.protocol/RegistryHolder
   (get-registry [this]
     (:metrics-registry @state))
