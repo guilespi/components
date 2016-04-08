@@ -1,4 +1,4 @@
-(defproject com.intception.components/datomic "0.1.6"
+(defproject com.intception.components/datomic "0.1.7"
   :description "Datomic Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"

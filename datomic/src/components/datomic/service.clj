@@ -9,6 +9,12 @@
   (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s"
           db host port db))
 
+(defmethod make-uri :sql-server
+  [storage {:keys [db host port user password]}]
+  (format "datomic:sql://%s?jdbc:sqlserver://%s:%s;DatabaseName=%s;sendStringParametersAsUnicode=false;Username=%s;Password=%s"
+          db host port db user password))
+
+
 (defmethod make-uri :mem
   [storage {:keys [db-name]}]
   (format "datomic:mem://%s"
