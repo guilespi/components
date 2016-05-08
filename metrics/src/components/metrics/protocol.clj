@@ -1,4 +1,5 @@
-(ns components.metrics.protocol)
+(ns components.metrics.protocol
+  (:require [metrics.timers :as timers]))
 
 (defprotocol Metrics
   (add-counter! [m id title])
@@ -10,13 +11,18 @@
   (dec-counter! [m id value] [m id])
   (update-histogram! [m id value])
   (mark-meter! [m id value] [m id])
-  (clock-this! [m id function])
   (counter? [m id])
   (gauge? [m id])
   (histogram? [m id])
   (meter? [m id])
-  (timer? [m id]))
+  (timer? [m id])
+  (get-timer [m id]))
 
 (defprotocol RegistryHolder
   (get-registry [m]))
 
+(defmacro clock-this!
+  [monitor timer-id subject]
+  `(if (get-timer ~monitor ~timer-id)
+     (timers/time! (get-timer ~monitor ~timer-id) ~subject)
+     ~subject))

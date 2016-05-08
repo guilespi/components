@@ -92,14 +92,10 @@
       (swap! current assoc id (timers/timer registry title))))
 
   (timer? [this id]
-    (get @(:current/meters @state) id))
+    (get @(:current/timers @state) id))
 
-  (clock-this! [this id subject]
-    (if-let [timer (get @(:current/timers @state) id)]
-      (if (fn? subject)
-        (timers/time-fn! timer subject)
-        (timers/time! timer subject))
-      (throw (RuntimeException. (str "unknown timer " id)))))
+  (get-timer [this id]
+    (get @(:current/timers @state) id))
 
   components.metrics.protocol/RegistryHolder
   (get-registry [this]
@@ -119,7 +115,8 @@
       ;;we have to delay the instrumentation of namespaces in order to give some time to the
       ;;jvm to load them all
       (.start (Thread.  #(do (Thread/sleep 1000)
-                             (instrument/instrument-all this (:application-name conf)))))
+                             (doseq [rootns (:instrument-namespaces conf)]
+                               (instrument/instrument-all this rootns)))))
       (when (:instrument-jvm conf)
         (metrics.jvm.core/instrument-jvm service-registry))
       (when (get-in conf [:console-reporter :enabled])
@@ -152,10 +149,7 @@
   (update-histogram! [this id value] true)
   (add-timer! [this id title] true)
   (timer? [this id] true)
-  (clock-this! [this id subject]
-    (if (fn? subject)
-      (subject)
-      subject))
+  (get-timer [this id] nil)
   components.metrics.protocol/RegistryHolder
   (get-registry [this]
     (:metrics-registry @state))
