@@ -1,4 +1,4 @@
-(defproject com.intception/components "0.1.19"
+(defproject com.intception/components "0.1.20"
   :description "Reusable services implementation following the components pattern"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
@@ -11,7 +11,7 @@
                  [com.intception.components/redis "0.1.7"]
                  [com.intception.components/metrics "0.1.10"]
                  [com.intception.components/time-series "0.1.12"]
-                 [com.intception.components/blob-storage "0.1.7"]]
+                 [com.intception.components/blob-storage "0.1.8"]]
   :plugins [[lein-sub "0.2.4"]
             [codox "0.8.5"]]
   :sub ["lifecycle"
