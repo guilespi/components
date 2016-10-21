@@ -1,4 +1,4 @@
-(defproject com.intception.components/time-series "0.1.12"
+(defproject com.intception.components/time-series "0.1.13"
   :description "Time Series Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
