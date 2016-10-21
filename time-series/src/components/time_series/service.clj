@@ -1,9 +1,11 @@
 (ns components.time-series.service
   (:require [time-series-storage.api :as time-series]
             [time-series-storage.postgres :as postgres]
-            [time-series-storage.sql-server :as sql-server])
+            [time-series-storage.sql-server :as sql-server]
+            [time-series-storage.mem :as memory])
   (:import [time_series_storage.postgres Postgres]
            [time_series_storage.sql_server SqlServer]
+           [time_series_storage.mem Mem]
            [com.jolbox.bonecp BoneCPDataSource])
   (use components.lifecycle.protocol))
 
@@ -33,6 +35,20 @@
   Service
   (handler [_]
     ))
+
+(extend-type time_series_storage.mem.Mem
+
+  Lifecycle
+  (start [this system]
+    )
+
+  (stop [this system]
+    )
+
+  Service
+  (handler [_]
+    ))
+
 
 (defn datasource
   [jdbc-config]
@@ -68,5 +84,6 @@
  [{:keys [type config]}]
  (let [ds (datasource config)]
    (condp = type
-    :postgres (Postgres. ds)
-    :sql-server (SqlServer. ds))))
+     :mem (Mem. (atom {}))
+     :postgres (Postgres. ds)
+     :sql-server (SqlServer. ds))))
