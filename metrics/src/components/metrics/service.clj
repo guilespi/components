@@ -1,5 +1,6 @@
 (ns components.metrics.service
   (:require
+    [pallet.thread-expr :as th]
     [metrics.reporters.console :as console-reporter]
     [metrics.reporters.graphite :as graphite-reporter]
     [metrics.reporters :as rmng]
@@ -18,9 +19,19 @@
   [registry report-freq]
   (rmng/start (console-reporter/reporter registry #{}) report-freq))
 
+(defn- get-host-name
+  []
+  (.getHostName (java.net.InetAddress/getLocalHost)))
+
 (defn- start-graphite-reporter
-  [registry host port report-freq]
-  (rmng/start (graphite-reporter/reporter registry {:host host :port port}) report-freq))
+  [registry config]
+  (rmng/start (graphite-reporter/reporter registry
+                                          (-> config
+                                              (th/when-not-> (:prefix config)
+                                                         (assoc :prefix (get-host-name)))
+                                              (dissoc :freq :enabled)))
+              (or (:freq config)
+                  10)))
 
 (defrecord SystemMonitor [state]
   components.metrics.protocol/Metrics
@@ -124,9 +135,7 @@
       (when (get-in conf [:graphite-reporter :enabled])
         (start-graphite-reporter
           service-registry
-          (get-in conf [:graphite-reporter :host])
-          (get-in conf [:graphite-reporter :port])
-          (get-in conf [:graphite-reporter :freq])))))
+          (:graphite-reporter conf)))))
 
 (stop [this system]))
 
