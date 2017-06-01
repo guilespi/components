@@ -19,8 +19,9 @@
                                 routes)
                               (merge {:join? false
                                       :port port
-                                      :request-header-size request-header-size
                                       :send-server-version? false}
+                                     (when request-header-size
+                                       {:request-header-size request-header-size})
                                      (when use-ssl
                                        {:ssl? true
                                         :ssl-port (or ssl-port 443)

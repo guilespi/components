@@ -1,4 +1,4 @@
-(defproject com.intception.components/jetty "0.1.9"
+(defproject com.intception.components/jetty "0.1.10"
   :description "Jetty Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
