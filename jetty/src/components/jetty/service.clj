@@ -19,10 +19,8 @@
                                 routes)
                               (merge {:join? false
                                       :port port
-                                      :configurator (fn [jetty]
-                                                      (when request-header-size
-                                                        (doseq [connector (.getConnectors jetty)]
-                                                          (.setRequestHeaderSize connector request-header-size))))}
+                                      :request-header-size request-header-size
+                                      :send-server-version? false}
                                      (when use-ssl
                                        {:ssl? true
                                         :ssl-port (or ssl-port 443)
