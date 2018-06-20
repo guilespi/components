@@ -23,7 +23,7 @@
 (extend-type blob_storage.sql_server.SqlServer
   Lifecycle
   (start [this system]
-    )
+    (blob-api/init-schema! this))
 
   (stop [this system])
 

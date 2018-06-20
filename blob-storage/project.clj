@@ -1,4 +1,4 @@
-(defproject com.intception.components/blob-storage "0.1.10"
+(defproject com.intception.components/blob-storage "0.1.11"
   :description "Time Series Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
