@@ -15,6 +15,12 @@
           db host port db user password))
 
 
+(defmethod make-uri :cassandra
+  [storage {:keys [db host port user password]}]
+  (format "datomic:cass://%s:%s/datomic.datomic/%s?ssl=&password=%s&user=%s"
+          host port
+          db user password))
+
 (defmethod make-uri :mem
   [storage {:keys [db-name]}]
   (format "datomic:mem://%s"
