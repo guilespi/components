@@ -1,6 +1,6 @@
 (ns components.jetty.service
-  (require [ring.adapter.jetty :as jetty])
-  (use components.lifecycle.protocol))
+  (:require [ring.adapter.jetty :as jetty])
+  (:use components.lifecycle.protocol))
 
 (defrecord JettyWeb [state config]
   Lifecycle

@@ -7,7 +7,7 @@
            [blob_storage.sql_server SqlServer]
            [blob_storage.mem Mem]
            [com.jolbox.bonecp BoneCPDataSource])
-  (use components.lifecycle.protocol))
+  (:use components.lifecycle.protocol))
 
 (extend-type blob_storage.postgres.Postgres
   Lifecycle

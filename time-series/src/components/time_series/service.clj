@@ -7,7 +7,7 @@
            [time_series_storage.sql_server SqlServer]
            [time_series_storage.mem Mem]
            [com.jolbox.bonecp BoneCPDataSource])
-  (use components.lifecycle.protocol))
+  (:use components.lifecycle.protocol))
 
 
 (extend-type time_series_storage.postgres.Postgres

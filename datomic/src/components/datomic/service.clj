@@ -1,6 +1,6 @@
 (ns components.datomic.service
-  (require [datomic.api :as d])
-  (use components.lifecycle.protocol))
+  (:require [datomic.api :as d])
+  (:use components.lifecycle.protocol))
 
 (defmulti make-uri (fn [storage options] storage))
 

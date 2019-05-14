@@ -1,6 +1,6 @@
 (ns components.redis.service
-  (require [taoensso.carmine :as car :refer (wcar)])
-  (use components.lifecycle.protocol))
+  (:require [taoensso.carmine :as car :refer (wcar)])
+  (:use components.lifecycle.protocol))
 
 
 (defrecord Redis [state host port]

@@ -1,5 +1,5 @@
 (ns components.app.service
-  (use components.lifecycle.protocol))
+  (:use components.lifecycle.protocol))
 
 (defrecord App [components]
   Lifecycle
