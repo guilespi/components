@@ -10,7 +10,7 @@
   (start [this system]
     (let [{:keys [routes port request-header-size
                   use-ssl ssl-port ssl-keystore
-                  ssl-keystore-password]} config]
+                  ssl-keystore-password max-threads]} config]
       (stop this system)
       (swap! state
              assoc :jetty
@@ -19,6 +19,7 @@
                                 routes)
                               (merge {:join? false
                                       :port port
+                                      :max-threads (or max-threads 50)
                                       :send-server-version? false}
                                      (when request-header-size
                                        {:request-header-size request-header-size})
