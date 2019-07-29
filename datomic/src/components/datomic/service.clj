@@ -5,9 +5,9 @@
 (defmulti make-uri (fn [storage options] storage))
 
 (defmethod make-uri :postgres
-  [storage {:keys [db host port]}]
-  (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s"
-          db host port db))
+  [storage {:keys [db host port user password]}]
+  (format "datomic:sql://%s?jdbc:postgresql://%s:%s/%s?user=%s&password=%s"
+          db host port db user password))
 
 (defmethod make-uri :sql-server
   [storage {:keys [db host port user password]}]
