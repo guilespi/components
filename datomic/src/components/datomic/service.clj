@@ -37,6 +37,11 @@
     (swap! state
            assoc :datomic
            (d/connect uri)))
+
+  Identifier
+  (get-id [_]
+    (:id state))
+
   Uri
   (get-uri [_]
     uri)
@@ -47,5 +52,8 @@
 
 (defn make
   "Creates a datomic db component"
- [storage options]
- (->Datomic (atom {}) (make-uri storage options)))
+  [storage options]
+  (->Datomic (atom (merge {}
+                          (when (:id options)
+                            {:id (:id options)})))
+             (make-uri storage options)))
