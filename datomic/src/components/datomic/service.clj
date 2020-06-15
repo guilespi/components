@@ -40,7 +40,7 @@
 
   Identifier
   (get-id [_]
-    (:id state))
+    (:id @state))
 
   Uri
   (get-uri [_]
