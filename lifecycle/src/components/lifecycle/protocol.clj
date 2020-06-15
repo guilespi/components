@@ -6,3 +6,6 @@
 
 (defprotocol Service
   (handler [this] "Retrieves service handler"))
+
+(defprotocol Identifier
+  (get-id [this] "Retrieves service identifier"))
