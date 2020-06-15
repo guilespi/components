@@ -21,6 +21,14 @@
                     ((comp (memfn getName) class) %))
           (:components app)))
 
+(defn ->by-component-id
+  [app component-id]
+  (filter #(and (satisfies? Identifier %)
+                (= component-id
+                   (get-id %)))
+          (:components app)))
+
+
 (defn ->components
   [app service]
   (->by-class-name app (format "^components\\.%s\\.service\\.[^.]+$"
