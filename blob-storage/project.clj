@@ -1,10 +1,10 @@
-(defproject com.intception.components/blob-storage "0.1.16"
+(defproject com.intception.components/blob-storage "0.1.17"
   :description "Time Series Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [com.intception.components/lifecycle "0.1.6"]
-                 [com.zaxxer/HikariCP "3.4.2"]
+                 [com.jolbox/bonecp "0.8.0.RELEASE"]
                  [org.slf4j/slf4j-log4j12 "1.7.7"]
                  [com.intception/blob-storage "0.2.3"]])
