@@ -22,9 +22,9 @@
           db user password))
 
 (defmethod make-uri :mem
-  [storage {:keys [db-name]}]
+  [storage {:keys [db db-name]}] ; db-name is kept only for backward compatibility
   (format "datomic:mem://%s"
-          db-name))
+          (or db db-name)))
 
 (defprotocol Uri
   (get-uri [this] "Returns unique URI identifier for datomic storage"))

@@ -3,7 +3,7 @@
   (:use components.lifecycle.protocol))
 
 
-(defrecord Redis [state host port]
+(defrecord Redis [state host port password]
 
   Lifecycle
   (stop [this system])
@@ -11,7 +11,8 @@
     (swap! state
            assoc :redis
            {:pool {} :spec {:host host
-                            :port port}}))
+                            :port port
+                            :password password}}))
 
   Service
   (handler [_]
@@ -19,8 +20,8 @@
 
 (defn make
   "Creates a redis component"
- [{:keys [host port]}]
- (->Redis (atom {}) host port))
+ [{:keys [host port password]}]
+ (->Redis (atom {}) host port password))
 
 
 (defmacro exec

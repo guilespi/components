@@ -64,7 +64,7 @@
                  (.setIdleMaxAgeInMinutes (or (get-in jdbc-config [:pool :max-age]) 60))
                  ;;Query to avoid connections from dying (varies on database)
                  (.setConnectionTestStatement (or (get-in jdbc-config [:pool :test-statement])
-                                                  "/* ping *\\/ SELECT 1")))] ;;this statement should work with mysql,
+                                                  "/* ping */ SELECT 1")))] ;;this statement should work with mysql,
                                                                               ;; sql-server, postgresql h2 and sqlite
                                                                               ;; be careful
       {:datasource cpds})

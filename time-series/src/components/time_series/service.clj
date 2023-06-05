@@ -58,22 +58,22 @@
           min-pool (or (get-in jdbc-config [:pool :min-pool]) 5)
           max-pool (or (get-in jdbc-config [:pool :max-pool]) 20)
           cpds (doto (BoneCPDataSource.)
-                 (.setJdbcUrl (str "jdbc:" (:subprotocol jdbc-config) ":" (:subname jdbc-config)))
-                 (.setUsername (:user jdbc-config))
-                 (.setPassword (:password jdbc-config))
-                 (.setMinConnectionsPerPartition (inc (int (/ min-pool partitions))))
-                 (.setMaxConnectionsPerPartition (inc (int (/ max-pool partitions))))
-                 (.setPartitionCount partitions)
-                 (.setStatisticsEnabled true)
-                 ;; Test connections default is 240 minutes
-                 (.setIdleConnectionTestPeriodInMinutes (or (get-in jdbc-config [:pool :test-period]) 240))
-                 ;; Default idle is 60 minutes
-                 (.setIdleMaxAgeInMinutes (or (get-in jdbc-config [:pool :max-age]) 60))
-                 ;;Query to avoid connections from dying (varies on database)
-                 (.setConnectionTestStatement (or (get-in jdbc-config [:pool :test-statement])
-                                                  "/* ping *\\/ SELECT 1")))] ;;this statement should work with mysql,
-                                                                              ;; sql-server, postgresql h2 and sqlite
-                                                                              ;; be careful
+                     (.setJdbcUrl (str "jdbc:" (:subprotocol jdbc-config) ":" (:subname jdbc-config)))
+                     (.setUsername (:user jdbc-config))
+                     (.setPassword (:password jdbc-config))
+                     (.setMinConnectionsPerPartition (inc (int (/ min-pool partitions))))
+                     (.setMaxConnectionsPerPartition (inc (int (/ max-pool partitions))))
+                     (.setPartitionCount partitions)
+                     (.setStatisticsEnabled true)
+                     ;; Test connections default is 240 minutes
+                     (.setIdleConnectionTestPeriodInMinutes (or (get-in jdbc-config [:pool :test-period]) 240))
+                     ;; Default idle is 60 minutes
+                     (.setIdleMaxAgeInMinutes (or (get-in jdbc-config [:pool :max-age]) 60))
+                     ;;Query to avoid connections from dying (varies on database)
+                     (.setConnectionTestStatement (or (get-in jdbc-config [:pool :test-statement])
+                                                      "/* ping */ SELECT 1")))] ;;this statement should work with mysql,
+      ;; sql-server, postgresql h2 and sqlite
+      ;; be careful
 
       {:datasource cpds})
     ;;plain jdbc
