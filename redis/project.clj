@@ -1,4 +1,4 @@
-(defproject com.intception.components/redis "0.1.9"
+(defproject com.intception.components/redis "0.1.10"
   :description "Redis Component"
   :url "https://github.com/guilespi/components"
   :license {:name "Eclipse Public License"

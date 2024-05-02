@@ -1,15 +1,13 @@
 (ns components.blob-storage.service
   (:require [blob-storage.api :as blob-api]
-            [blob-storage.postgres :as postgres]
-            [blob-storage.sql-server :as sql-server]
-            [blob-storage.mem :as memory])
-  (:import [blob_storage.postgres Postgres]
-           [blob_storage.sql_server SqlServer]
-           [blob_storage.mem Mem]
-           [com.jolbox.bonecp BoneCPDataSource])
+            [blob-storage.core :as blob-core]
+            [blob-storage.backends.postgres :as postgres]
+            [blob-storage.backends.sql-server :as sql-server]
+            [blob-storage.backends.mem :as memory])
+  (:import [com.jolbox.bonecp BoneCPDataSource])
   (:use components.lifecycle.protocol))
 
-(extend-type blob_storage.postgres.Postgres
+(extend-type blob_storage.core.BlobStorageImpl
   Lifecycle
   (start [this system]
     (blob-api/init-schema! this))
@@ -19,29 +17,6 @@
   Service
   (handler [_]
     ))
-
-(extend-type blob_storage.sql_server.SqlServer
-  Lifecycle
-  (start [this system]
-    (blob-api/init-schema! this))
-
-  (stop [this system])
-
-  Service
-  (handler [_]
-    ))
-
-(extend-type blob_storage.mem.Mem
-  Lifecycle
-  (start [this system]
-    )
-
-  (stop [this system])
-
-  Service
-  (handler [_]
-    ))
-
 
 (defn datasource
   [jdbc-config]
@@ -73,9 +48,10 @@
 
 (defn make
   "Creates a blob-storage component from a specified type"
-  [{:keys [type config]}]
-  (let [ds (datasource config)]
-    (condp = type
-      :mem (Mem. (atom {}))
-      :postgres (Postgres. ds)
-      :sql-server (SqlServer. ds))))
+  [{:keys [type config] :as settings}]
+  (let [ds (datasource config)
+        backend  (condp = type
+                   :mem (memory/make)
+                   :postgres (postgres/make ds)
+                   :sql-server (sql-server/make ds))]
+    (blob-core/make backend settings)))
