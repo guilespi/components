@@ -142,22 +142,22 @@
 (defrecord DummySystemMonitor [state]
   components.metrics.protocol/Metrics
   (add-counter! [this id title] true)
-  (counter? [this id] true)
+  (counter? [this id] nil)
   (inc-counter! [this id] true)
   (inc-counter! [this id value] true)
   (dec-counter! [this id] true)
   (dec-counter! [this id value] true)
   (add-gauge! [this id title function] true)
-  (gauge? [this id] true)
+  (gauge? [this id] nil)
   (add-histogram! [this id title] true)
-  (histogram? [this id] true)
+  (histogram? [this id] nil)
   (add-meter! [this id title] true)
-  (meter? [this id] true)
+  (meter? [this id] nil)
   (mark-meter! [this id] true)
   (mark-meter! [this id value] true)
   (update-histogram! [this id value] true)
   (add-timer! [this id title] true)
-  (timer? [this id] true)
+  (timer? [this id] nil)
   (get-timer [this id] nil)
   components.metrics.protocol/RegistryHolder
   (get-registry [this]

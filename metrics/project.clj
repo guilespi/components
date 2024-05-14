@@ -1,4 +1,4 @@
-(defproject com.intception.components/metrics "0.1.11"
+(defproject com.intception.components/metrics "0.1.12"
   :description "metrics component"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
